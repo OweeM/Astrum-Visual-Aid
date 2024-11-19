@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Manage Images</title>
+</head>
+<body>
+    <h3>Manage Images</h3>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('manage_images') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit" class="upload">Upload Image</button>
+    </form>
+
+    <form action="{{ url_for('delete_images') }}" method="post">
+        <h3>Delete Images</h3>
+        <div id="image-selection">
+            {% for image in images %}
+                <label>
+                    <input type="checkbox" name="selectedImages" value="{{ image }}">
+                    <img src="{{ url_for('static', filename='images/' + image) }}" alt="{{ image }}" class="thumbnail">
+                </label>
+            {% endfor %}
+        </div>
+        <button type="submit" class="delete-selected">Delete Selected Images</button>
+    </form>
+
+    <a href="{{ url_for('index') }}" class="back-to-slideshow">Back to Slideshow</a>
+</body>
+</html>
