@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slideshow</title>
+    <link rel="stylesheet" href="/styles.css">
+<body>
+    <div class="slideshow-container">
+        <img id="slide-image" src="" alt="Slideshow Image" style="width: 100%;">
+        <div id="slideshow-controls">
+            <button onclick="prevImage()"><</button>
+            <button onclick="nextImage()">></button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const images = {{ images | tojson }};
+        console.log("Images array from server:", images);
+
+        let currentImageIndex = 0;
+
+        function updateImage() {
+            // Update the image source based on the current image index
+            document.getElementById('slide-image').src = `/static/images/${images[currentImageIndex]}`;
+            console.log("Current image source:", `/static/images/${images[currentImageIndex]}`);
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            updateImage();
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            updateImage();
+        }
+
+        // Initialize the slideshow with the first image
+        updateImage();
+    </script>
+</body>
+</html>
